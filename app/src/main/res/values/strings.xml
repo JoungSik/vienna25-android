@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Vienna25</string>
+
+    <string name="text_splash_title">Welcome to Vienna 25!</string>
+
+    <string name="text_time_days">일</string>
+    <string name="text_time_hours">시간</string>
+    <string name="text_time_minutes">분</string>
+    <string name="text_time_seconds">초</string>
 </resources>
