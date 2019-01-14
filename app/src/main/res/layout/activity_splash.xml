@@ -17,7 +17,7 @@
             android:gravity="center"
             android:text="@string/text_splash_title"
             android:textColor="@android:color/black"
-            android:textSize="32sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <ImageView

@@ -7,4 +7,9 @@
     <string name="text_time_hours">시간</string>
     <string name="text_time_minutes">분</string>
     <string name="text_time_seconds">초</string>
+
+    <string-array name="text_images">
+        <item>탱버 맞은 비엔나!</item>
+        <item>아침부터 뭐하는거야!\n25살이나 먹은 비엔나!</item>
+    </string-array>
 </resources>
