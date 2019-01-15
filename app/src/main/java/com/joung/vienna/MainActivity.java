@@ -1,9 +1,7 @@
 package com.joung.vienna;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,6 +17,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+
+import androidx.appcompat.app.AppCompatActivity;
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,26 +31,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String D_DAY = "01/01/2021 00:00:00";
     private static final String[] images = {"image_1", "image_2"};
 
-    private ImageSwitcher mImageSwitcher;
-    private TextView mImageTextView;
+    @BindView(R.id.switcher_image)
+    ImageSwitcher mImageSwitcher;
+    @BindView(R.id.text_image)
+    TextView mImageTextView;
 
-    private TextView mTextDays, mTextHours, mTextMinutes, mTextSeconds;
+    @BindView(R.id.text_days)
+    TextView mTextDays;
+    @BindView(R.id.text_hours)
+    TextView mTextHours;
+    @BindView(R.id.text_minutes)
+    TextView mTextMinutes;
+    @BindView(R.id.text_seconds)
+    TextView mTextSeconds;
+
+    @BindString(R.string.format_date_time)
+    String dateTimeFormat;
 
     private static int mImageIndex = 0;
 
-    @SuppressLint("SimpleDateFormat")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mTextDays = findViewById(R.id.text_days);
-        mTextHours = findViewById(R.id.text_hours);
-        mTextMinutes = findViewById(R.id.text_minutes);
-        mTextSeconds = findViewById(R.id.text_seconds);
-
-        mImageTextView = findViewById(R.id.text_image);
-        mImageSwitcher = findViewById(R.id.switcher_image);
+        ButterKnife.bind(this);
 
         Animation out = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
         Animation in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
@@ -54,27 +62,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mImageSwitcher.setInAnimation(in);
         mImageSwitcher.setOutAnimation(out);
 
-        mImageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+        mImageSwitcher.setFactory(() -> {
+            ImageView imageView = new ImageView(getApplicationContext());
 
-            @Override
-            public View makeView() {
-                ImageView imageView = new ImageView(getApplicationContext());
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT));
 
-                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT));
+            imageView.setOnClickListener(MainActivity.this);
 
-                imageView.setOnClickListener(MainActivity.this);
-
-                return imageView;
-            }
+            return imageView;
         });
 
         showImage(mImageIndex);
         mImageIndex += 1;
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(dateTimeFormat, Locale.KOREA);
         Date dayDate = new Date();
         try {
             dayDate = dateFormat.parse(D_DAY);
