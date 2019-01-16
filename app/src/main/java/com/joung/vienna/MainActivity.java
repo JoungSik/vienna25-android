@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final String D_DAY = "01/01/2021 00:00:00";
-    private static final String[] images = {"image_1", "image_2"};
+    private static final String[] images = {"image_1", "image_2", "image_3"};
 
     @BindView(R.id.switcher_image)
     ImageSwitcher mImageSwitcher;
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindString(R.string.format_date_time)
     String dateTimeFormat;
 
-    private static int mImageIndex = 0;
+    private int mImageIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
