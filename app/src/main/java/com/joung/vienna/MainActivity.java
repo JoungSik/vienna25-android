@@ -3,15 +3,11 @@ package com.joung.vienna;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageSwitcher;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewSwitcher;
+
+import com.joung.vienna.adapter.ImageAdapter;
+import com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,21 +16,18 @@ import java.util.Date;
 import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final String D_DAY = "01/01/2021 00:00:00";
-    private static final String[] images = {"image_1", "image_2", "image_3"};
-
-    @BindView(R.id.switcher_image)
-    ImageSwitcher mImageSwitcher;
-    @BindView(R.id.text_image)
-    TextView mImageTextView;
 
     @BindView(R.id.text_days)
     TextView mTextDays;
@@ -45,10 +38,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.text_seconds)
     TextView mTextSeconds;
 
+    @BindView(R.id.recycler_image)
+    RecyclerView mRecyclerView;
+
+    @BindView(R.id.pager_indicator)
+    IndefinitePagerIndicator indefinite;
+
+    @BindView(R.id.count_down_view)
+    CountdownView mCountDownView;
+
     @BindString(R.string.format_date_time)
     String dateTimeFormat;
-
-    private int mImageIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,27 +56,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        Animation out = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
-        Animation in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(new ImageAdapter(this));
 
-        mImageSwitcher.setInAnimation(in);
-        mImageSwitcher.setOutAnimation(out);
+        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(mRecyclerView);
 
-        mImageSwitcher.setFactory(() -> {
-            ImageView imageView = new ImageView(getApplicationContext());
-
-            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT));
-
-            imageView.setOnClickListener(MainActivity.this);
-
-            return imageView;
-        });
-
-        showImage(mImageIndex);
-        mImageIndex += 1;
+        indefinite.attachToRecyclerView(mRecyclerView);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(dateTimeFormat, Locale.KOREA);
         Date dayDate = new Date();
@@ -91,24 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         long countDown = dayDate.getTime() - currentDate.getTime();
         ViennaCount count = new ViennaCount(countDown, 1000);
         count.start();
-    }
 
-    private void showImage(int index) {
-        String[] textImages = getResources().getStringArray(R.array.text_images);
-        int resourceID = getResources().getIdentifier(images[index], "drawable", getPackageName());
-
-        mImageSwitcher.setImageResource(resourceID);
-        mImageTextView.setText(textImages[index]);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (mImageIndex > images.length - 1) {
-            mImageIndex = 0;
-        }
-
-        showImage(mImageIndex);
-        mImageIndex += 1;
+        mCountDownView.resume();
     }
 
     public class ViennaCount extends CountDownTimer {

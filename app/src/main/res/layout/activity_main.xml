@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="16dp">
 
     <LinearLayout
@@ -65,37 +67,51 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/container_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/container_count"
-        android:layout_marginTop="30dp"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:orientation="vertical">
 
-        <ImageSwitcher
-            android:id="@+id/switcher_image"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center_horizontal" />
-
-        <TextView
-            android:id="@+id/text_image"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_image"
             android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:ignore="NestedWeights" />
+
+        <com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator
+            android:id="@+id/pager_indicator"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:layout_gravity="center_horizontal"
+            app:dotColor="@color/colorPrimary"
+            app:dotCount="3"
+            app:selectedDotColor="@color/colorAccent" />
 
     </LinearLayout>
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_below="@id/container_image"
-        android:layout_centerHorizontal="true"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="happy_birth.json"
-        app:lottie_loop="true" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1">
 
-</RelativeLayout>
+        <com.joung.vienna.CountdownView
+            android:id="@+id/count_down_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <!--<TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/text_ready_update"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />-->
+
+    </LinearLayout>
+
+</LinearLayout>
