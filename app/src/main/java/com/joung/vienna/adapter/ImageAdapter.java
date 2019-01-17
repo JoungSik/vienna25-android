@@ -1,20 +1,20 @@
 package com.joung.vienna.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.joung.vienna.R;
+import com.marcoscg.materialtoast.MaterialToast;
 import com.squareup.picasso.Picasso;
 
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
 
@@ -58,11 +58,23 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         void bindView(int position) {
             String image = images[position];
 
-            // String[] textImages = mContext.getResources().getStringArray(R.array.text_images);
             int resourceID = mContext.getResources().getIdentifier(image, "drawable",
                     mContext.getPackageName());
 
+            mImageView.setTag(position);
             Picasso.get().load(resourceID).into(mImageView);
+        }
+
+        @OnClick(R.id.image)
+        void onClick(View view) {
+            int position = (int) view.getTag();
+            String[] textImages = mContext.getResources().getStringArray(R.array.text_images);
+
+            new MaterialToast(mContext)
+                    .setMessage(textImages[position])
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setDuration(Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 }

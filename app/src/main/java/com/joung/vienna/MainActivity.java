@@ -1,17 +1,18 @@
 package com.joung.vienna;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.joung.vienna.adapter.ImageAdapter;
+import com.joung.vienna.view.CountdownView;
+import com.marcoscg.materialtoast.MaterialToast;
 import com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,14 +31,14 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String D_DAY = "01/01/2021 00:00:00";
 
-    @BindView(R.id.text_days)
+    /*@BindView(R.id.text_days)
     TextView mTextDays;
     @BindView(R.id.text_hours)
     TextView mTextHours;
     @BindView(R.id.text_minutes)
     TextView mTextMinutes;
     @BindView(R.id.text_seconds)
-    TextView mTextSeconds;
+    TextView mTextSeconds;*/
 
     @BindView(R.id.recycler_image)
     RecyclerView mRecyclerView;
@@ -74,16 +76,29 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "e - " + e.toString());
         }
 
-        Date currentDate = Calendar.getInstance().getTime();
+        /*Date currentDate = Calendar.getInstance().getTime();
 
         long countDown = dayDate.getTime() - currentDate.getTime();
         ViennaCount count = new ViennaCount(countDown, 1000);
-        count.start();
+        count.start();*/
 
-        mCountDownView.resume();
+        mCountDownView.resume(dayDate.getTime());
     }
 
-    public class ViennaCount extends CountDownTimer {
+    @OnClick(R.id.button_share)
+    public void onClick() {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Copied Text", getString(R.string.text_share_app_download));
+        clipboard.setPrimaryClip(clip);
+
+        new MaterialToast(this)
+                .setMessage(getString(R.string.text_share_complete))
+                .setIcon(R.mipmap.ic_launcher)
+                .setDuration(Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    /*public class ViennaCount extends CountDownTimer {
 
         ViennaCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
@@ -106,5 +121,5 @@ public class MainActivity extends AppCompatActivity {
             mTextMinutes.setText(String.valueOf(minutes));
             mTextSeconds.setText(String.valueOf(seconds));
         }
-    }
+    }*/
 }

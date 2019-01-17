@@ -16,5 +16,11 @@
         <item>안녕하세용! 잘부탁드려요!</item>
     </string-array>
 
+    <string name="text_clock_regex">:</string>
+    <string name="text_app_version">앱 버전</string>
+
     <string name="text_ready_update">업데이트를 기다려주세요!</string>
+
+    <string name="text_share_complete">링크가 복사되었습니다.</string>
+    <string name="text_share_app_download">https://play.google.com/store/apps/details?id=com.joung.vienna</string>
 </resources>
