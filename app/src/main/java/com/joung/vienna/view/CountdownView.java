@@ -2,6 +2,7 @@ package com.joung.vienna.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -66,8 +67,10 @@ public class CountdownView extends LinearLayout implements Runnable {
     }
 
     private void init() {
-        setOrientation(HORIZONTAL);
         inflate(getContext(), R.layout.clock, this);
+
+        setOrientation(HORIZONTAL);
+        setGravity(Gravity.CENTER_HORIZONTAL);
 
         ButterKnife.bind(this);
     }
@@ -76,26 +79,28 @@ public class CountdownView extends LinearLayout implements Runnable {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mCharVeryHighDate.setTextSize(80);
+        int sp = (int) (600 / getResources().getDisplayMetrics().scaledDensity);
+
+        mCharVeryHighDate.setTextSize(sp);
         mCharVeryHighDate.setChars(DECIMAL);
-        mCharHighDate.setTextSize(80);
+        mCharHighDate.setTextSize(sp);
         mCharHighDate.setChars(DECIMAL);
-        mCharLowDate.setTextSize(80);
+        mCharLowDate.setTextSize(sp);
         mCharLowDate.setChars(DECIMAL);
 
-        mCharHighHour.setTextSize(80);
+        mCharHighHour.setTextSize(sp);
         mCharHighHour.setChars(HOUR_DECIMAL);
-        mCharLowHour.setTextSize(80);
+        mCharLowHour.setTextSize(sp);
         mCharLowHour.setChars(DECIMAL);
 
-        mCharHighMinute.setTextSize(80);
+        mCharHighMinute.setTextSize(sp);
         mCharHighMinute.setChars(TIME_DECIMAL);
-        mCharLowMinute.setTextSize(80);
+        mCharLowMinute.setTextSize(sp);
         mCharLowMinute.setChars(DECIMAL);
 
-        mCharHighSecond.setTextSize(80);
+        mCharHighSecond.setTextSize(sp);
         mCharHighSecond.setChars(TIME_DECIMAL);
-        mCharLowSecond.setTextSize(80);
+        mCharLowSecond.setTextSize(sp);
         mCharLowSecond.setChars(DECIMAL);
 
     }
