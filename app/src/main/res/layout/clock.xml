@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:clock="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:clock="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:orientation="horizontal">
 
     <com.xenione.digit.TabDigit
         android:id="@+id/charVeryHighDate"
@@ -9,7 +13,7 @@
         clock:backgroundColor="@android:color/black"
         clock:padding="10dp"
         clock:textColor="@android:color/white"
-        clock:textSize="24sp" />
+        clock:textSize="32sp" />
 
     <com.xenione.digit.TabDigit
         android:id="@+id/charHighDate"
@@ -18,7 +22,7 @@
         clock:backgroundColor="@android:color/black"
         clock:padding="10dp"
         clock:textColor="@android:color/white"
-        clock:textSize="24sp" />
+        clock:textSize="32sp" />
 
     <com.xenione.digit.TabDigit
         android:id="@+id/charLowDate"
@@ -27,7 +31,7 @@
         clock:backgroundColor="@android:color/black"
         clock:padding="10dp"
         clock:textColor="@android:color/white"
-        clock:textSize="24sp" />
+        clock:textSize="32sp" />
 
     <View
         android:layout_width="20dp"
@@ -43,7 +47,7 @@
         clock:backgroundColor="@android:color/black"
         clock:padding="10dp"
         clock:textColor="@android:color/white"
-        clock:textSize="24sp" />
+        clock:textSize="32sp" />
 
     <com.xenione.digit.TabDigit
         android:id="@+id/charLowHour"
@@ -52,7 +56,7 @@
         clock:backgroundColor="@android:color/black"
         clock:padding="10dp"
         clock:textColor="@android:color/white"
-        clock:textSize="24sp" />
+        clock:textSize="32sp" />
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -79,7 +83,7 @@
         clock:backgroundColor="@android:color/black"
         clock:padding="10dp"
         clock:textColor="@android:color/white"
-        clock:textSize="24sp" />
+        clock:textSize="32sp" />
 
     <com.xenione.digit.TabDigit
         android:id="@+id/charLowMinute"
@@ -88,7 +92,7 @@
         clock:backgroundColor="@android:color/black"
         clock:padding="10dp"
         clock:textColor="@android:color/white"
-        clock:textSize="24sp" />
+        clock:textSize="32sp" />
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -112,11 +116,10 @@
         android:id="@+id/charHighSecond"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         clock:backgroundColor="@android:color/black"
         clock:padding="10dp"
         clock:textColor="@android:color/white"
-        clock:textSize="24sp" />
+        clock:textSize="32sp" />
 
     <com.xenione.digit.TabDigit
         android:id="@+id/charLowSecond"
@@ -125,6 +128,6 @@
         clock:backgroundColor="@android:color/black"
         clock:padding="10dp"
         clock:textColor="@android:color/white"
-        clock:textSize="24sp" />
+        clock:textSize="32sp" />
 
-</merge>
+</LinearLayout>

@@ -79,28 +79,28 @@ public class CountdownView extends LinearLayout implements Runnable {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        int sp = (int) (600 / getResources().getDisplayMetrics().scaledDensity);
+        // int sp = (int) (600 / getResources().getDisplayMetrics().scaledDensity);
 
-        mCharVeryHighDate.setTextSize(sp);
+        // mCharVeryHighDate.setTextSize(sp);
         mCharVeryHighDate.setChars(DECIMAL);
-        mCharHighDate.setTextSize(sp);
+        // mCharHighDate.setTextSize(sp);
         mCharHighDate.setChars(DECIMAL);
-        mCharLowDate.setTextSize(sp);
+        // mCharLowDate.setTextSize(sp);
         mCharLowDate.setChars(DECIMAL);
 
-        mCharHighHour.setTextSize(sp);
+        // mCharHighHour.setTextSize(sp);
         mCharHighHour.setChars(HOUR_DECIMAL);
-        mCharLowHour.setTextSize(sp);
+        // mCharLowHour.setTextSize(sp);
         mCharLowHour.setChars(DECIMAL);
 
-        mCharHighMinute.setTextSize(sp);
+        // mCharHighMinute.setTextSize(sp);
         mCharHighMinute.setChars(TIME_DECIMAL);
-        mCharLowMinute.setTextSize(sp);
+        // mCharLowMinute.setTextSize(sp);
         mCharLowMinute.setChars(DECIMAL);
 
-        mCharHighSecond.setTextSize(sp);
+        // mCharHighSecond.setTextSize(sp);
         mCharHighSecond.setChars(TIME_DECIMAL);
-        mCharLowSecond.setTextSize(sp);
+        // mCharLowSecond.setTextSize(sp);
         mCharLowSecond.setChars(DECIMAL);
 
     }
