@@ -3,6 +3,8 @@ package com.joung.vienna;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,15 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String D_DAY = "01/01/2021 00:00:00";
 
-    /*@BindView(R.id.text_days)
-    TextView mTextDays;
-    @BindView(R.id.text_hours)
-    TextView mTextHours;
-    @BindView(R.id.text_minutes)
-    TextView mTextMinutes;
-    @BindView(R.id.text_seconds)
-    TextView mTextSeconds;*/
-
     @BindView(R.id.recycler_image)
     RecyclerView mRecyclerView;
 
@@ -52,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     @BindString(R.string.format_date_time)
     String dateTimeFormat;
 
+    private int index = 1;
+    private boolean isRunnable = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false));
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setAdapter(new ImageAdapter(this));
+        ImageAdapter adapter = new ImageAdapter(this);
+        mRecyclerView.setAdapter(adapter);
 
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(mRecyclerView);
@@ -76,13 +73,21 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "e - " + e.toString());
         }
 
-        /*Date currentDate = Calendar.getInstance().getTime();
-
-        long countDown = dayDate.getTime() - currentDate.getTime();
-        ViennaCount count = new ViennaCount(countDown, 1000);
-        count.start();*/
-
         mCountDownView.resume(dayDate.getTime());
+
+        final Handler handler = new Handler();
+        Thread thread = new Thread(() -> {
+            isRunnable = true;
+            while (isRunnable) {
+                SystemClock.sleep(1000);
+                handler.post(() -> {
+                    SystemClock.sleep(2000);
+                    mRecyclerView.smoothScrollToPosition(index);
+                    index = index >= 3 ? 0 : index + 1;
+                });
+            }
+        });
+        thread.start();
     }
 
     @OnClick(R.id.button_share)
@@ -98,28 +103,10 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    /*public class ViennaCount extends CountDownTimer {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isRunnable = false;
+    }
 
-        ViennaCount(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
-        }
-
-        @Override
-        public void onFinish() {
-            Toast.makeText(MainActivity.this, "Complete!", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onTick(long millis) {
-            int days = (int) Math.floor(millis / (1000 * 60 * 60 * 24));
-            int hours = (int) Math.floor((millis % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            int minutes = (int) Math.floor((millis % (1000 * 60 * 60)) / (1000 * 60));
-            int seconds = (int) Math.floor((millis % (1000 * 60)) / 1000);
-
-            mTextDays.setText(String.valueOf(days));
-            mTextHours.setText(String.valueOf(hours));
-            mTextMinutes.setText(String.valueOf(minutes));
-            mTextSeconds.setText(String.valueOf(seconds));
-        }
-    }*/
 }

@@ -21,6 +21,8 @@ import butterknife.ButterKnife;
  */
 public class CountdownView extends LinearLayout implements Runnable {
 
+    private static final String TAG = CountdownView.class.getSimpleName();
+
     private static final char[] HOUR_DECIMAL = new char[]{'2', '1', '0'};
     private static final char[] TIME_DECIMAL = new char[]{'5', '4', '3', '2', '1', '0'};
     private static final char[] DECIMAL = new char[]{'9', '8', '7', '6', '5', '4', '3', '2', '1', '0'};
@@ -50,6 +52,16 @@ public class CountdownView extends LinearLayout implements Runnable {
     private View mClock = this;
 
     private int elapsedTime = 0;
+    private int mSecondTime = 0;
+
+    private int mMinuteTime = 0;
+    private int mHighMinuteTime = 0;
+
+    private int mHourTime = 0;
+    private int mHighHourTime = 0;
+
+    private int mDayTime = 0;
+    private int mHighDayTime = 0;
 
     private boolean mPause = true;
 
@@ -79,28 +91,17 @@ public class CountdownView extends LinearLayout implements Runnable {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        // int sp = (int) (600 / getResources().getDisplayMetrics().scaledDensity);
-
-        // mCharVeryHighDate.setTextSize(sp);
         mCharVeryHighDate.setChars(DECIMAL);
-        // mCharHighDate.setTextSize(sp);
         mCharHighDate.setChars(DECIMAL);
-        // mCharLowDate.setTextSize(sp);
         mCharLowDate.setChars(DECIMAL);
 
-        // mCharHighHour.setTextSize(sp);
         mCharHighHour.setChars(HOUR_DECIMAL);
-        // mCharLowHour.setTextSize(sp);
         mCharLowHour.setChars(DECIMAL);
 
-        // mCharHighMinute.setTextSize(sp);
         mCharHighMinute.setChars(TIME_DECIMAL);
-        // mCharLowMinute.setTextSize(sp);
         mCharLowMinute.setChars(DECIMAL);
 
-        // mCharHighSecond.setTextSize(sp);
         mCharHighSecond.setChars(TIME_DECIMAL);
-        // mCharLowSecond.setTextSize(sp);
         mCharLowSecond.setChars(DECIMAL);
 
     }
@@ -155,7 +156,18 @@ public class CountdownView extends LinearLayout implements Runnable {
         mCharLowSecond.setChar(9 - secLow);
 
         elapsedTime = 10 - Character.getNumericValue(DECIMAL[9 - secLow]);
-        ViewCompat.postOnAnimationDelayed(mClock, this, 500);
+        mSecondTime = 6 - Character.getNumericValue(TIME_DECIMAL[5 - secHeight]);
+
+        mMinuteTime = 10 - Character.getNumericValue(DECIMAL[9 - minuteLow]);
+        mHighMinuteTime = 6 - Character.getNumericValue(TIME_DECIMAL[5 - minuteHeight]);
+
+        mHourTime = 10 - Character.getNumericValue(DECIMAL[9 - hourLow]);
+        mHighHourTime = 3 - Character.getNumericValue(HOUR_DECIMAL[2 - hourHeight]);
+
+        mDayTime = 10 - Character.getNumericValue(DECIMAL[9 - dateLow]);
+        mHighDayTime = 10 - Character.getNumericValue(DECIMAL[9 - dateHeight]);
+
+        ViewCompat.postOnAnimationDelayed(mClock, this, 1000);
     }
 
     @Override
@@ -166,36 +178,62 @@ public class CountdownView extends LinearLayout implements Runnable {
 
         mCharLowSecond.start();
 
+        if (elapsedTime % 10 == 0 && mSecondTime % 6 == 0 &&
+                mMinuteTime % 10 == 0 && mHighMinuteTime % 6 == 0 &&
+                mHourTime % 10 == 0 && mHighHourTime % 2 == 0 &&
+                mDayTime % 10 == 0 && mHighDayTime % 10 == 0) {
+            mCharVeryHighDate.start();
+            mHighDayTime = 0;
+        }
+
+        if (elapsedTime % 10 == 0 && mSecondTime % 6 == 0 &&
+                mMinuteTime % 10 == 0 && mHighMinuteTime % 6 == 0 &&
+                mHourTime % 10 == 0 && mHighHourTime % 2 == 0 &&
+                mDayTime % 10 == 0) {
+            mCharHighDate.start();
+            mDayTime = 0;
+            mHighDayTime += 1;
+        }
+
+        if (elapsedTime % 10 == 0 && mSecondTime % 6 == 0 &&
+                mMinuteTime % 10 == 0 && mHighMinuteTime % 6 == 0 &&
+                mHourTime % 10 == 0 && mHighHourTime % 2 == 0) {
+            mCharLowDate.start();
+            mHighHourTime = 0;
+            mDayTime += 1;
+        }
+
+        if (elapsedTime % 10 == 0 && mSecondTime % 6 == 0 &&
+                mMinuteTime % 10 == 0 && mHighMinuteTime % 6 == 0 &&
+                mHourTime % 10 == 0) {
+            mCharHighHour.start();
+            mHourTime = 0;
+            mHighHourTime += 1;
+        }
+
+        if (elapsedTime % 10 == 0 && mSecondTime % 6 == 0 &&
+                mMinuteTime % 10 == 0 && mHighMinuteTime % 6 == 0) {
+            mCharLowHour.start();
+            mHighMinuteTime = 0;
+            mHourTime += 1;
+        }
+
+        if (elapsedTime % 10 == 0 && mSecondTime % 6 == 0 && mMinuteTime % 10 == 0) {
+            mCharHighMinute.start();
+            mMinuteTime = 0;
+            mHighMinuteTime += 1;
+        }
+
+        if (elapsedTime % 10 == 0 && mSecondTime % 6 == 0) {
+            mCharLowMinute.start();
+            mSecondTime = 0;
+            mMinuteTime += 1;
+        }
+
         if (elapsedTime % 10 == 0) {
             mCharHighSecond.start();
-        }
-
-        if (elapsedTime % 60 == 0) {
-            mCharLowMinute.start();
-        }
-
-        if (elapsedTime % 600 == 0) {
-            mCharHighMinute.start();
-        }
-
-        if (elapsedTime % 3600 == 0) {
-            mCharLowHour.start();
-        }
-
-        if (elapsedTime % 36000 == 0) {
-            mCharHighHour.start();
-        }
-
-        if (elapsedTime % 86400 == 0) {
-            mCharLowDate.start();
-        }
-
-        if (elapsedTime % 864000 == 0) {
-            mCharHighDate.start();
-        }
-
-        if (elapsedTime % 8640000 == 0) {
-            mCharVeryHighDate.start();
+            elapsedTime = 0;
+            mSecondTime += 1;
         }
 
         elapsedTime += 1;
