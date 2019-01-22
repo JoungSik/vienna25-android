@@ -3,8 +3,6 @@ package com.joung.vienna;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -45,9 +43,6 @@ public class MainActivity extends AppCompatActivity {
     @BindString(R.string.format_date_time)
     String dateTimeFormat;
 
-    private int index = 1;
-    private boolean isRunnable = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,20 +69,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mCountDownView.resume(dayDate.getTime());
-
-        final Handler handler = new Handler();
-        Thread thread = new Thread(() -> {
-            isRunnable = true;
-            while (isRunnable) {
-                SystemClock.sleep(1000);
-                handler.post(() -> {
-                    SystemClock.sleep(2000);
-                    mRecyclerView.smoothScrollToPosition(index);
-                    index = index >= 3 ? 0 : index + 1;
-                });
-            }
-        });
-        thread.start();
     }
 
     @OnClick(R.id.button_share)
@@ -106,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        isRunnable = false;
     }
 
 }
