@@ -84,6 +84,15 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+    @OnClick(R.id.button_book)
+    public void showNote() {
+        new MaterialToast(this)
+                .setMessage(getString(R.string.text_ready_update))
+                .setIcon(R.mipmap.ic_launcher)
+                .setDuration(Toast.LENGTH_SHORT)
+                .show();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
