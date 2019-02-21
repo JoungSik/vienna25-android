@@ -1,4 +1,4 @@
-package com.joung.vienna;
+package com.joung.vienna.count;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.joung.vienna.adapter.ImageAdapter;
-import com.joung.vienna.view.CountdownView;
+import com.joung.vienna.R;
+import com.joung.vienna.count.view.ImageAdapter;
+import com.joung.vienna.count.view.CountdownView;
 import com.marcoscg.materialtoast.MaterialToast;
 import com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator;
 
