@@ -19,7 +19,7 @@ import butterknife.OnClick;
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
 
     private String[] images = new String[]{
-            "image_1", "image_2", "image_3", "image_4"
+            "image_1", "image_2", "image_3", "image_4", "image_5"
     };
 
     private Context mContext;
