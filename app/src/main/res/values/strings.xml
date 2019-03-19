@@ -25,4 +25,6 @@
 
     <string name="text_share_complete">링크가 복사되었습니다.</string>
     <string name="text_share_app_download">https://play.google.com/store/apps/details?id=com.joung.vienna</string>
+
+    <string name="error_text_date_time_parse">날짜 변환 에러</string>
 </resources>

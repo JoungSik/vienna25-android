@@ -2,35 +2,29 @@ package com.joung.vienna.count;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.joung.vienna.R;
-import com.joung.vienna.count.view.ImageAdapter;
 import com.joung.vienna.count.view.CountdownView;
+import com.joung.vienna.count.view.ImageAdapter;
+import com.joung.vienna.note.NoteActivity;
 import com.marcoscg.materialtoast.MaterialToast;
 import com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainContract.View {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-
-    private static final String D_DAY = "01/01/2021 00:00:00";
 
     @BindView(R.id.recycler_image)
     RecyclerView mRecyclerView;
@@ -41,8 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.count_down_view)
     CountdownView mCountDownView;
 
-    @BindString(R.string.format_date_time)
-    String dateTimeFormat;
+    private MainContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +43,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        new MainPresenter(this, this);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false));
         mRecyclerView.setHasFixedSize(true);
+
         ImageAdapter adapter = new ImageAdapter(this);
         mRecyclerView.setAdapter(adapter);
 
@@ -61,15 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         indefinite.attachToRecyclerView(mRecyclerView);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(dateTimeFormat, Locale.KOREA);
-        Date dayDate = new Date();
-        try {
-            dayDate = dateFormat.parse(D_DAY);
-        } catch (ParseException e) {
-            Log.e(TAG, "e - " + e.toString());
-        }
-
-        mCountDownView.resume(dayDate.getTime());
+        mPresenter.getCurrentDateTime();
     }
 
     @OnClick(R.id.button_share)
@@ -85,18 +73,35 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    /*@OnClick(R.id.button_book)
+    @OnClick(R.id.button_book)
     public void showNote() {
-        new MaterialToast(this)
-                .setMessage(getString(R.string.text_ready_update))
-                .setIcon(R.mipmap.ic_launcher)
-                .setDuration(Toast.LENGTH_SHORT)
-                .show();
-    }*/
+        Intent intent = new Intent(this, NoteActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
+    @Override
+    public void setPresenter(MainContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void updateCountView(Long dateTime) {
+        mCountDownView.resume(dateTime);
+    }
+
+    @Override
+    public void updateCountViewError() {
+        new MaterialToast(this)
+                .setMessage(getString(R.string.error_text_date_time_parse))
+                .setIcon(R.mipmap.ic_launcher)
+                .setDuration(Toast.LENGTH_SHORT)
+                .show();
+
+        new Handler().postDelayed(() -> finish(), 2000);
+    }
 }

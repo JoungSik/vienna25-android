@@ -16,9 +16,6 @@ import androidx.core.view.ViewCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by Eugeni on 04/12/2016.
- */
 public class CountdownView extends LinearLayout implements Runnable {
 
     private static final String TAG = CountdownView.class.getSimpleName();
