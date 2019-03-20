@@ -11,8 +11,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.joung.vienna.R;
 import com.joung.vienna.admin.model.User;
 import com.joung.vienna.note.model.Note;
+import com.joung.vienna.note.model.NoteDataModel;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,17 +36,20 @@ public class NotePresenter implements NoteContract.Presenter {
 
     private final Context mContext;
     private final NoteContract.View mView;
+    private final NoteDataModel mNoteDataModel;
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     private User mUser;
 
-    NotePresenter(Context context, NoteContract.View view) {
-        mContext = context;
-
+    NotePresenter(Context context, NoteContract.View view, NoteDataModel noteDataModel) {
         mView = view;
         mView.setPresenter(this);
+
+        mContext = context;
+
+        mNoteDataModel = noteDataModel;
 
         SharedPreferences pref = mContext.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String stringUser = pref.getString(PREF_COLUMN_USER, null);
@@ -87,11 +98,11 @@ public class NotePresenter implements NoteContract.Presenter {
 
     @Override
     public void getNotes() {
-        databaseReference.child("note").addChildEventListener(new ChildEventListener() {
+        databaseReference.child("note").orderByKey().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Note note = dataSnapshot.getValue(Note.class);
-                mView.addNote(note);
+                mNoteDataModel.addNote(note);
             }
 
             @Override
@@ -126,7 +137,19 @@ public class NotePresenter implements NoteContract.Presenter {
         if (mUser != null) {
             note.setAuthor(mUser.getName());
         }
-        databaseReference.child("note").push().setValue(note);
+
+        String dateFormat = mContext.getString(R.string.format_date);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat, Locale.KOREA);
+
+        Date currentTime = Calendar.getInstance().getTime();
+        try {
+            Date dayDate = simpleDateFormat.parse(note.getDate());
+            String key = dayDate.getTime() + "-" + currentTime.getTime();
+            databaseReference.child("note").child(key).setValue(note);
+        } catch (ParseException e) {
+            Log.e(TAG, "e - " + e.toString());
+            mView.errorAddNote();
+        }
     }
 
     @Override

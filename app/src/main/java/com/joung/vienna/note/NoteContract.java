@@ -12,8 +12,6 @@ public interface NoteContract {
 
         void errorCheckPassword();
 
-        void addNote(Note note);
-
         void errorAddNote();
 
     }

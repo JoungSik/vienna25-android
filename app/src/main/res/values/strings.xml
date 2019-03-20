@@ -8,6 +8,7 @@
     <string name="text_time_minutes">분</string>
     <string name="text_time_seconds">초</string>
 
+    <string name="format_date">yyyy.MM.dd</string>
     <string name="format_date_time">MM/dd/yyyy hh:mm:ss</string>
 
     <string-array name="text_images">

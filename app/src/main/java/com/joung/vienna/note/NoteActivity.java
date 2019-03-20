@@ -1,7 +1,8 @@
 package com.joung.vienna.note;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -9,11 +10,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.joung.vienna.R;
+import com.joung.vienna.note.adapter.NoteAdapter;
 import com.joung.vienna.note.model.Note;
 import com.marcoscg.materialtoast.MaterialToast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -21,13 +26,23 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
 
     private NoteContract.Presenter mPresenter;
 
+    @BindView(R.id.list_note)
+    RecyclerView mRecyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
         ButterKnife.bind(this);
 
-        new NotePresenter(this, this);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(
+                this, RecyclerView.VERTICAL, false));
+
+        NoteAdapter adapter = new NoteAdapter(this);
+        mRecyclerView.setAdapter(adapter);
+
+        new NotePresenter(this, this, adapter);
         mPresenter.getNotes();
     }
 
@@ -72,6 +87,37 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
             EditText editContentTextView = view.findViewById(R.id.edit_content);
             EditText editDateTextView = view.findViewById(R.id.edit_date);
 
+            editDateTextView.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    editDateTextView.removeTextChangedListener(this);
+
+                    String origin = s.toString();
+                    String format = origin.replace(".", "");
+
+                    if (format.length() > 6) {
+                        format = format.substring(0, 4) + "." + format.substring(4, 6) + "." + format.substring(6, format.length());
+                    } else if (format.length() > 4) {
+                        format = format.substring(0, 4) + "." + format.substring(4, format.length());
+                    }
+
+                    editDateTextView.setText(format);
+                    editDateTextView.setSelection(editDateTextView.getText().length());
+
+                    editDateTextView.addTextChangedListener(this);
+                }
+            });
+
             AlertDialog dialog = new AlertDialog.Builder(this)
                     .setView(view)
                     .setTitle(R.string.title_add_note)
@@ -104,11 +150,6 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
                 .setIcon(R.mipmap.ic_launcher)
                 .setDuration(Toast.LENGTH_SHORT)
                 .show();
-    }
-
-    @Override
-    public void addNote(Note note) {
-        Log.v(NoteActivity.class.getSimpleName(), "Add note - " + note.getTitle() + " / " + note.getContent() + " / " + note.getDate() + " / " + note.getAuthor());
     }
 
     @Override
