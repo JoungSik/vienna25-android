@@ -26,5 +26,28 @@
     <string name="text_share_complete">링크가 복사되었습니다.</string>
     <string name="text_share_app_download">https://play.google.com/store/apps/details?id=com.joung.vienna</string>
 
+    <string name="text_auto_sign_in">자동 로그인</string>
+
+    <string name="title_sign_in">로그인</string>
+    <string name="title_add_note">새로운 흑역사</string>
+
+    <string name="button_sign_in">로그인</string>
+    <string name="button_save">저장</string>
+    <string name="button_cancel">취소</string>
+
+    <string name="hint_name">이름</string>
+    <string name="hint_password">비밀번호</string>
+
+    <string name="hint_title">제목</string>
+    <string name="hint_content">내용</string>
+    <string name="hint_date">날짜 (ex 2019.03.20)</string>
+
     <string name="error_text_date_time_parse">날짜 변환 에러</string>
+
+    <string name="error_text_sign_in">로그인 실패</string>
+
+    <string name="error_text_database">데이터베이스 에러</string>
+
+    <string name="error_text_add_note">흑역사 저장 실패</string>
+
 </resources>

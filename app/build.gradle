@@ -61,4 +61,11 @@ dependencies {
     implementation 'com.xenione.libs:tab-digit:1.0.2'
 
     implementation 'com.github.marcoscgdev:MaterialToast:1.0.1'
+
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-database:16.1.0'
+
 }
+apply plugin: 'com.google.gms.google-services'
