@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joung.vienna.R;
 import com.joung.vienna.note.adapter.NoteAdapter;
 import com.joung.vienna.note.model.Note;
@@ -34,6 +36,14 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     @BindView(R.id.list_note)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.progress_note)
+    ProgressBar mProgressBar;
+
+    @BindView(R.id.button_add_note)
+    FloatingActionButton mFab;
+
+    private NoteAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,11 +54,23 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
         mRecyclerView.setLayoutManager(new LinearLayoutManager(
                 this, RecyclerView.VERTICAL, false));
 
-        NoteAdapter adapter = new NoteAdapter(this);
-        mRecyclerView.setAdapter(adapter);
+        mAdapter = new NoteAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
 
-        new NotePresenter(this, this, adapter);
+        new NotePresenter(this, this, mAdapter);
         mPresenter.getNotes();
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    mFab.hide();
+                } else {
+                    mFab.show();
+                }
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 
     @OnClick(R.id.button_add_note)
@@ -171,5 +193,20 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
                 .setIcon(R.mipmap.ic_launcher)
                 .setDuration(Toast.LENGTH_SHORT)
                 .show();
+    }
+
+    @Override
+    public void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void scrollToBottom() {
+        mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
     }
 }

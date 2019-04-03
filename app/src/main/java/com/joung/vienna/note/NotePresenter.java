@@ -98,11 +98,16 @@ public class NotePresenter implements NoteContract.Presenter {
 
     @Override
     public void getNotes() {
+        mView.showProgressBar();
+
         databaseReference.child("note").orderByKey().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Note note = dataSnapshot.getValue(Note.class);
                 mNoteDataModel.addNote(note);
+
+                mView.hideProgressBar();
+                mView.scrollToBottom();
             }
 
             @Override

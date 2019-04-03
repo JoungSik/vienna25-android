@@ -14,6 +14,12 @@ public interface NoteContract {
 
         void errorAddNote();
 
+        void showProgressBar();
+
+        void hideProgressBar();
+
+        void scrollToBottom();
+
     }
 
     interface Presenter extends BasePresenter {
