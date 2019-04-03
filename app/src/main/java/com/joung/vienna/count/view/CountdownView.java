@@ -1,7 +1,9 @@
 package com.joung.vienna.count.view;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -60,7 +62,7 @@ public class CountdownView extends LinearLayout implements Runnable {
     private int mDayTime = 0;
     private int mHighDayTime = 0;
 
-    private boolean mPause = true;
+    private boolean mPause = false;
 
     public CountdownView(Context context) {
         this(context, null);
@@ -103,8 +105,15 @@ public class CountdownView extends LinearLayout implements Runnable {
 
     }
 
+    public void stop() {
+        mPause = true;
+        new Handler().postDelayed(() -> mPause = false, 1000);
+    }
+
     public void resume(long dayDate) {
-        mPause = false;
+        if (mPause) {
+            return;
+        }
 
         Date currentDate = Calendar.getInstance().getTime();
         long dateTime = (dayDate - currentDate.getTime()) / 1000;
@@ -170,6 +179,7 @@ public class CountdownView extends LinearLayout implements Runnable {
     @Override
     public void run() {
         if (mPause) {
+            Log.e(TAG, "Count - STOP");
             return;
         }
 

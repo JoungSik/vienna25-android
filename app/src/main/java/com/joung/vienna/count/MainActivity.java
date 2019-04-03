@@ -56,8 +56,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         pagerSnapHelper.attachToRecyclerView(mRecyclerView);
 
         indefinite.attachToRecyclerView(mRecyclerView);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         mPresenter.getCurrentDateTime();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mCountDownView.stop();
     }
 
     @OnClick(R.id.button_share)
