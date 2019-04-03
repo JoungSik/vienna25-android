@@ -32,6 +32,8 @@ public interface NoteContract {
 
         boolean checkLogin();
 
+        void getFCMKey();
+
     }
 
 }

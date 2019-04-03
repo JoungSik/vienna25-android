@@ -58,6 +58,7 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
         mRecyclerView.setAdapter(mAdapter);
 
         new NotePresenter(this, this, mAdapter);
+        mPresenter.getFCMKey();
         mPresenter.getNotes();
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Vienna25</string>
+    <string name="vienna_notification_channel_id">Vienna25 notification channel</string>
+    <string name="vienna_notification_channel_topic">Vienna25</string>
 
     <string name="text_splash_title">Welcome to Vienna 25!</string>
 

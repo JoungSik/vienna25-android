@@ -11,10 +11,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.joung.vienna.R;
 import com.joung.vienna.admin.model.User;
 import com.joung.vienna.note.model.Note;
 import com.joung.vienna.note.model.NoteDataModel;
+import com.joung.vienna.retrofit.APIClient;
+import com.joung.vienna.retrofit.BaseUrl;
+import com.joung.vienna.retrofit.FCMAPI;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,6 +28,10 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -42,6 +50,7 @@ public class NotePresenter implements NoteContract.Presenter {
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     private User mUser;
+    private String mFCMKey = null;
 
     NotePresenter(Context context, NoteContract.View view, NoteDataModel noteDataModel) {
         mView = view;
@@ -134,7 +143,7 @@ public class NotePresenter implements NoteContract.Presenter {
 
     @Override
     public void saveNotes(Note note) {
-        if (note.isEmpty()) {
+        if (note.isEmpty() && mFCMKey != null) {
             mView.errorAddNote();
             return;
         }
@@ -150,6 +159,7 @@ public class NotePresenter implements NoteContract.Presenter {
         try {
             Date dayDate = simpleDateFormat.parse(note.getDate());
             String key = dayDate.getTime() + "-" + currentTime.getTime();
+            sendFCM(note);
             databaseReference.child("note").child(key).setValue(note);
         } catch (ParseException e) {
             Log.e(TAG, "e - " + e.toString());
@@ -160,5 +170,51 @@ public class NotePresenter implements NoteContract.Presenter {
     @Override
     public boolean checkLogin() {
         return mUser != null;
+    }
+
+    @Override
+    public void getFCMKey() {
+        databaseReference.child("fcm_key").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mFCMKey = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "FCM Cancelled - " + databaseError.getMessage());
+            }
+        });
+    }
+
+    private void sendFCM(Note note) {
+        Retrofit retrofit = APIClient.getClient();
+        FCMAPI fcmAPI = retrofit.create(FCMAPI.class);
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(BaseUrl.PARAM_TO, "/topics/"
+                + mContext.getString(R.string.vienna_notification_channel_topic));
+
+        JsonObject notificationJsonObject = new JsonObject();
+        notificationJsonObject.addProperty(BaseUrl.PARAM_TITLE, note.getTitle());
+        notificationJsonObject.addProperty(BaseUrl.PARAM_BODY, note.getContent());
+
+        jsonObject.add(BaseUrl.PARAM_NOTIFICATION, notificationJsonObject);
+
+        fcmAPI.sendFCM("key=" + mFCMKey, jsonObject).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (!response.isSuccessful()) {
+                    Log.e(TAG, "response - " + response.toString());
+                    mView.errorAddNote();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "response - " + t.toString());
+                mView.errorAddNote();
+            }
+        });
     }
 }
