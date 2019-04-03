@@ -1,5 +1,6 @@
 package com.joung.vienna.note;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,10 @@ import com.joung.vienna.R;
 import com.joung.vienna.note.adapter.NoteAdapter;
 import com.joung.vienna.note.model.Note;
 import com.marcoscg.materialtoast.MaterialToast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -79,13 +84,20 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
         mPresenter = presenter;
     }
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     public void resultCheckPassword(boolean check) {
         if (check) {
             View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_note, null);
+
             EditText editTitleTextView = view.findViewById(R.id.edit_title);
             EditText editContentTextView = view.findViewById(R.id.edit_content);
             EditText editDateTextView = view.findViewById(R.id.edit_date);
+
+            Date currentDate = Calendar.getInstance().getTime();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+            String currentDateString = sdf.format(currentDate);
+            editDateTextView.setText(currentDateString);
 
             editDateTextView.addTextChangedListener(new TextWatcher() {
                 @Override
