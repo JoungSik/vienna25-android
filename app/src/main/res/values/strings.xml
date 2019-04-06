@@ -47,6 +47,8 @@
 
     <string name="error_text_sign_in">로그인 실패</string>
 
+    <string name="error_text_date_format">날짜 입력 방식이 잘못되었습니다.</string>
+
     <string name="error_text_database">데이터베이스 에러</string>
 
     <string name="error_text_add_note">흑역사 저장 실패</string>

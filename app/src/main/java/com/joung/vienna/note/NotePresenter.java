@@ -39,8 +39,9 @@ public class NotePresenter implements NoteContract.Presenter {
 
     private static final String TAG = NotePresenter.class.getSimpleName();
     private static final String PREF_NAME = TAG + "_user.pref";
-
     private static final String PREF_COLUMN_USER = TAG + "_user";
+
+    private static final String DATE_FORMAT = "^[0-9][0-9][0-9][0-9]\\.[0-9][0-9]\\.[0-9][0-9]$";
 
     private final Context mContext;
     private final NoteContract.View mView;
@@ -145,6 +146,11 @@ public class NotePresenter implements NoteContract.Presenter {
 
     @Override
     public void saveNotes(Note note) {
+        if (!note.getDate().matches(DATE_FORMAT)) {
+            mView.errorDateFormat();
+            return;
+        }
+
         if (note.isEmpty() && mFCMKey != null) {
             mView.errorAddNote();
             return;

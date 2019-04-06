@@ -12,6 +12,8 @@ public interface NoteContract {
 
         void errorCheckPassword();
 
+        void errorDateFormat();
+
         void errorAddNote();
 
         void showProgressBar();

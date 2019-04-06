@@ -186,6 +186,15 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     }
 
     @Override
+    public void errorDateFormat() {
+        new MaterialToast(this)
+                .setMessage(getString(R.string.error_text_date_format))
+                .setIcon(R.mipmap.ic_launcher)
+                .setDuration(Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
     public void errorAddNote() {
         new MaterialToast(this)
                 .setMessage(getString(R.string.error_text_add_note))
