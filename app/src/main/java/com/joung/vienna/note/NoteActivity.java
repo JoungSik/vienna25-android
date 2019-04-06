@@ -31,8 +31,6 @@ import butterknife.OnClick;
 
 public class NoteActivity extends AppCompatActivity implements NoteContract.View {
 
-    private NoteContract.Presenter mPresenter;
-
     @BindView(R.id.list_note)
     RecyclerView mRecyclerView;
 
@@ -42,7 +40,7 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     @BindView(R.id.button_add_note)
     FloatingActionButton mFab;
 
-    private NoteAdapter mAdapter;
+    private NoteContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +52,10 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
         mRecyclerView.setLayoutManager(new LinearLayoutManager(
                 this, RecyclerView.VERTICAL, false));
 
-        mAdapter = new NoteAdapter(this);
-        mRecyclerView.setAdapter(mAdapter);
+        NoteAdapter adapter = new NoteAdapter();
+        mRecyclerView.setAdapter(adapter);
 
-        new NotePresenter(this, this, mAdapter);
+        new NotePresenter(this, this, adapter);
         mPresenter.getFCMKey();
         mPresenter.getNotes();
 
@@ -206,8 +204,4 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
         mProgressBar.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    public void scrollToBottom() {
-        mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
-    }
 }

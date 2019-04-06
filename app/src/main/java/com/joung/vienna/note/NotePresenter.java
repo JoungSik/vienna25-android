@@ -113,10 +113,12 @@ public class NotePresenter implements NoteContract.Presenter {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Note note = dataSnapshot.getValue(Note.class);
+                if (dataSnapshot.getKey() != null && note != null) {
+                    long key = Long.valueOf(dataSnapshot.getKey().split("-")[1]);
+                    note.setKey(key);
+                }
                 mNoteDataModel.addNote(note);
-
                 mView.hideProgressBar();
-                mView.scrollToBottom();
             }
 
             @Override

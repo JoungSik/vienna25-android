@@ -5,6 +5,7 @@ import androidx.annotation.Keep;
 @Keep
 public class Note {
 
+    private long key;
     private String title, content, date, author;
 
     public Note() {
@@ -23,6 +24,10 @@ public class Note {
         this.author = author;
     }
 
+    public void setKey(long key) {
+        this.key = key;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -37,6 +42,10 @@ public class Note {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public long getKey() {
+        return key;
     }
 
     public String getTitle() {

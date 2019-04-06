@@ -18,8 +18,6 @@ public interface NoteContract {
 
         void hideProgressBar();
 
-        void scrollToBottom();
-
     }
 
     interface Presenter extends BasePresenter {
