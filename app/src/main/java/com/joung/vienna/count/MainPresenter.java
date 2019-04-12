@@ -22,7 +22,7 @@ public class MainPresenter implements MainContract.Presenter {
     MainPresenter(Context context, MainContract.View view) {
         mContext = context;
         mView = view;
-        mView.setPresenter(this);
+        // mView.setPresenter(this);
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import com.joung.vienna.R;
+import com.joung.vienna.admin.AdminActivity;
 import com.joung.vienna.count.view.CountdownView;
 import com.joung.vienna.count.view.ImageAdapter;
 import com.joung.vienna.note.NoteActivity;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        new MainPresenter(this, this);
+        mPresenter = new MainPresenter(this, this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false));
@@ -89,14 +90,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         startActivity(intent);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    @OnClick(R.id.button_setting)
+    public void setting() {
+        startActivity(new Intent(this, AdminActivity.class));
     }
 
     @Override
-    public void setPresenter(MainContract.Presenter presenter) {
-        mPresenter = presenter;
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

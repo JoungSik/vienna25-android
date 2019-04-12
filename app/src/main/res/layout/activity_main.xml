@@ -61,17 +61,27 @@
 
             <ImageView
                 android:id="@+id/button_book"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
                 android:padding="8dp"
-                android:src="@android:drawable/ic_menu_gallery" />
+                android:src="@drawable/ic_event_note_black_24dp" />
 
             <ImageView
                 android:id="@+id/button_share"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
                 android:padding="8dp"
-                android:src="@android:drawable/ic_menu_share" />
+                android:src="@drawable/ic_share_black_24dp" />
+
+            <ImageView
+                android:id="@+id/button_setting"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:padding="8dp"
+                android:src="@drawable/ic_settings_black_24dp" />
 
         </LinearLayout>
 

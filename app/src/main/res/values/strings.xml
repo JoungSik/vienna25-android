@@ -31,6 +31,7 @@
 
     <string name="title_sign_in">로그인</string>
     <string name="title_add_note">새로운 흑역사</string>
+    <string name="title_setting">환경설정</string>
 
     <string name="button_sign_in">로그인</string>
     <string name="button_save">저장</string>

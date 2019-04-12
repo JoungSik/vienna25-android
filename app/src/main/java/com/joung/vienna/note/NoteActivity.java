@@ -55,7 +55,7 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
         NoteAdapter adapter = new NoteAdapter();
         mRecyclerView.setAdapter(adapter);
 
-        new NotePresenter(this, this, adapter);
+        mPresenter = new NotePresenter(this, this, adapter);
         mPresenter.getFCMKey();
         mPresenter.getNotes();
 
@@ -98,11 +98,6 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
         } else {
             mPresenter.checkPassword(null, null, true);
         }
-    }
-
-    @Override
-    public void setPresenter(NoteContract.Presenter presenter) {
-        mPresenter = presenter;
     }
 
     @SuppressLint("SimpleDateFormat")

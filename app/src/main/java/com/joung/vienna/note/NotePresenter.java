@@ -55,7 +55,7 @@ public class NotePresenter implements NoteContract.Presenter {
 
     NotePresenter(Context context, NoteContract.View view, NoteDataModel noteDataModel) {
         mView = view;
-        mView.setPresenter(this);
+        // mView.setPresenter(this);
 
         mContext = context;
 
