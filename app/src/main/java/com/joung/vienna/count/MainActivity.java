@@ -90,10 +90,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         startActivity(intent);
     }
 
-    @OnClick(R.id.button_setting)
+    /*@OnClick(R.id.button_setting)
     public void setting() {
         startActivity(new Intent(this, AdminActivity.class));
-    }
+    }*/
 
     @Override
     protected void onDestroy() {

@@ -19,6 +19,8 @@
         <item>안녕하세용! 잘부탁드려요!</item>
         <item>25살! 지금 출발합니다!</item>
         <item>급격하게 초췌해진 그들..</item>
+        <item>카드값:내가 너를 이끈다.</item>
+        <item>우리는 최강파티 25!</item>
     </string-array>
 
     <string name="text_clock_regex">:</string>

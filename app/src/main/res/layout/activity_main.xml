@@ -75,13 +75,13 @@
                 android:padding="8dp"
                 android:src="@drawable/ic_share_black_24dp" />
 
-            <ImageView
+            <!--<ImageView
                 android:id="@+id/button_setting"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:padding="8dp"
-                android:src="@drawable/ic_settings_black_24dp" />
+                android:src="@drawable/ic_settings_black_24dp" />-->
 
         </LinearLayout>
 
